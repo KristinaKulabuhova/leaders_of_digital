@@ -15,8 +15,7 @@ def inf_blogger(link, driver):
 
     is_russia = re.findall("[а-яА-Я]+", profile) 
     for word in ['travel', 'russia', 'samara', 'journey', 'traveler']:
-        if word in profile or len(is_russia) != 0 :
-
+        if word in profile or len(is_russia) != 0 :  
             information = {'name': None, 'link': None, 'followers': None, 'photo': None, 'mail': None, 'telephone': None, 'likes': None, 'date_last_post': None}
 
             information["link"] = link
@@ -91,7 +90,7 @@ def last_post(link, driver):
 
 
 
-def search_bloggers(text, driver):
+def search_bloggers(text, driver, count):
     list_bloggers = []
 
     all_inf_bloggers = []
@@ -104,10 +103,12 @@ def search_bloggers(text, driver):
     added = set()
   
     for i in bloggers:
-        href = i.get_attribute("href")
-        if "tags" not in href and "locations" not in href and href not in added:
-            list_bloggers.append(href)
-            added.add(href)
+        if count != 0:
+            count = count - 1
+            href = i.get_attribute("href")
+            if "tags" not in href and "locations" not in href and href not in added:
+                list_bloggers.append(href)
+                added.add(href)
     
     for bloger in list_bloggers:
         all_inf_bloggers.append(inf_blogger(bloger, driver))
@@ -147,9 +148,10 @@ def init_scraper(login, password):
     return driver
 
 driver = init_scraper("vefajov797", "dxrmnbu7tt72")
-dict = search_bloggers("Travel Blogger", driver)
+dict = search_bloggers("Travel Blogger", driver, 5)
 for i in dict:
     print(i)
+driver.close()
 
 # for elem in bloggers:
 #     dict = inf_blogger(elem, driver)
