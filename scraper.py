@@ -8,7 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 def inf_blogger(link, driver):
     driver.get(link)
-    driver.implicitly_wait(5) 
+    driver.implicitly_wait(20) 
 
     information = {'name': None, 'link': None, 'followers': None, 'photo': None, 'mail': None, 'telephone': None, 'likes': None, 'date_last_post': None}
 
@@ -41,7 +41,7 @@ def inf_blogger(link, driver):
 def find_likes(link, driver):
 
     likes = []
-    for i in range(1, 11): 
+    for i in range(1, 4): 
         for j in range(1, 4):
             try:
                 driver.get(link)
@@ -101,11 +101,11 @@ try:
 finally:
     password = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div/div[1]/div/form/div/div[2]/div/label/input")
     password.clear()
-    password.send_keys("KristinaKristina")
+    password.send_keys("Qwertyytrewq12344321")
 
     login = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div/div[1]/div/form/div/div[1]/div/label/input")
     login.clear()
-    login.send_keys("89851878142")
+    login.send_keys("b0ristab")
 driver.implicitly_wait(10) 
 driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div/div[1]/div/form/div/div[3]/button/div").click()
 driver.implicitly_wait(10) 
@@ -137,6 +137,11 @@ for elem in bloggers:
         print(key, value)
     print("\n")
 driver.close()
+
+#dict = inf_blogger("https://www.instagram.com/ptuxerman/", driver)
+#for key, value in dict.items():
+#    print(key, value)
+#    print("\n")
 
 #search_bloggers("Путешествие", "test.txt")
 #search_bloggers("Travel", "test.txt")
