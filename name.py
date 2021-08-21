@@ -7,9 +7,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 
 driver = webdriver.Chrome()
-file = open("test.txt", 'r')
-href = file.readline()
-driver.get(href)
+driver.get("https://www.instagram.com/ptuxerman/")
 
+move_to_element
 
 driver.close()
