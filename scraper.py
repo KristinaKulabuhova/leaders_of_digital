@@ -47,29 +47,27 @@ def inf_blogger(link, driver):
             return
 
 def find_likes_views(link, driver, information):
-
     likes = []
     views = []
 
     for i in range(1, 11): 
         for j in range(1, 4):
             driver.get(link)
-            driver.implicitly_wait(100)
 
             if i > 4:
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/section/main/div/div[3]/div[1]/div/button/div"))).click()
+                WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/section/main/div/div[3]/div[1]/div/button/div"))).click()
 
-            #WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/div[3]/article/div[1]/div/div[{}]/div[{}]/a".format(i, j))))
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/div[3]/article/div[1]/div/div[{}]/div[{}]/a".format(i, j))))
             link_post = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[3]/article/div[1]/div/div[{}]/div[{}]/a".format(i, j)).get_attribute("href")
             driver.get(link_post)
 
             try: 
-                #WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/div/a/span")))
+                WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/div/a/span")))
                 like = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/div/a/span").text
                 likes.append(like)
             except:
-                #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/span/span")))
+                WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/span/span")))
                 view = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/span/span").text
                 views.append(view)
 
@@ -83,7 +81,6 @@ def find_likes_views(link, driver, information):
 
 def last_post(link, driver):
     driver.get(link)
-    driver.implicitly_wait(60)
 
     link_post = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[3]/article/div[1]/div/div[1]/div[1]/a").get_attribute("href")
     
@@ -124,6 +121,8 @@ def search_bloggers(text, driver):
 
 def init_scraper(login, password):
     driver = webdriver.Chrome()
+    driver.implicitly_wait(110)
+    driver.set_page_load_timeout(60) 
 
     # chrome_options = webdriver.ChromeOptions()
     # chrome_options.add_argument("--disable-notifications")
@@ -139,7 +138,7 @@ def init_scraper(login, password):
         WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/section/main/div/div/div[1]/div/form/div/div[3]/button/div"))).click()
 
     except:
-        WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div")))
+        #WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div")))
 
         login = driver.find_element_by_xpath("/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div/div[1]/div/label/input").send_keys(login)
         password = driver.find_element_by_xpath("/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div/div[2]/div/label/input").send_keys(password)
@@ -148,11 +147,10 @@ def init_scraper(login, password):
 
     return driver
 
-driver = init_scraper("+79191880851", "APackOfWolvesIsHowlingAtMyDoor")
+driver = init_scraper("89851878142", "Kristina.Kul")
 dict = search_bloggers("Travel Blogger", driver)
 for i in dict:
     print(i)
-
 
 # for elem in bloggers:
 #     dict = inf_blogger(elem, driver)
