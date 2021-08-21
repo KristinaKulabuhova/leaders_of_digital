@@ -9,7 +9,6 @@ from selenium.webdriver.chrome.options import Options
 
 def inf_blogger(link, driver):
     driver.get(link)
-    driver.implicitly_wait(100)
     
     #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/header/section/div[2]")))
     profile = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/header/section/div[2]").text.lower()
@@ -51,28 +50,27 @@ def find_likes_views(link, driver, information):
     likes = []
     views = []
 
-    for i in range(1, 11): 
+    for i in range(1, 5): 
         for j in range(1, 4):
             driver.get(link)
 
             if i > 4:
+                driver.implicitly_wait(10)
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/section/main/div/div[3]/div[1]/div/button/div"))).click()
-
-            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/div[3]/article/div[1]/div/div[{}]/div[{}]/a".format(i, j))))
+                
             link_post = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[3]/article/div[1]/div/div[{}]/div[{}]/a".format(i, j)).get_attribute("href")
             driver.get(link_post)
 
             try: 
-                WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/div/a/span")))
+                WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/div/a/span")))
                 like = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/div/a/span").text
                 likes.append(like)
             except:
-                WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/span/span")))
+                #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/span/span")))
                 view = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/span/span").text
                 views.append(view)
 
-                WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/span"))).click()
+                driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/span").click()
                 like = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/div/div[4]/span").text
                 likes.append(like)
 
@@ -86,7 +84,7 @@ def last_post(link, driver):
     link_post = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[3]/article/div[1]/div/div[1]/div[1]/a").get_attribute("href")
     
     driver.get(link_post)
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/div[1]/article/div[3]/div[2]/a/time")))
+    #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/div[1]/article/div[3]/div[2]/a/time")))
     date = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[1]/article/div[3]/div[2]/a/time").get_attribute("datetime")
 
     return date
@@ -97,13 +95,12 @@ def search_bloggers(text, driver):
     list_bloggers = []
 
     all_inf_bloggers = []
-
-    driver.get("https://www.instagram.com/ptuxerman/")
+    driver.get("https://www.instagram.com/explore/")
 
     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/nav/div[2]/div/div/div[2]/input"))).send_keys(text)
-    driver.implicitly_wait(10) 
+    driver.implicitly_wait(10)
     bloggers = driver.find_elements_by_class_name('-qQT3')
-
+    driver.implicitly_wait(10)
     added = set()
   
     for i in bloggers:
@@ -122,13 +119,13 @@ def search_bloggers(text, driver):
 
 def init_scraper(login, password):
     driver = webdriver.Chrome()
-    driver.implicitly_wait(110)
-    driver.set_page_load_timeout(60) 
+    driver.implicitly_wait(60)
+    #driver.set_page_load_timeout(60) 
 
     options = Options()
     options.add_argument("user-data-dir=/tmp/auto")
     driver = webdriver.Chrome(chrome_options=options)
-
+    """
     driver.get("https://www.instagram.com/accounts/login/")
 
     try:
@@ -146,10 +143,10 @@ def init_scraper(login, password):
         password = driver.find_element_by_xpath("/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div/div[2]/div/label/input").send_keys(password)
 
         WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div/div[3]"))).click()
-
+    """
     return driver
 
-driver = init_scraper("cofape7423", "5053842a9c434a72")
+driver = init_scraper("vefajov797", "dxrmnbu7tt72")
 dict = search_bloggers("Travel Blogger", driver)
 for i in dict:
     print(i)
