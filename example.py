@@ -41,7 +41,7 @@ def inf_blogger(link, driver):
 def find_likes(link, driver):
 
     likes = []
-    for i in range(1, 11):
+    for i in range(1, 11): 
         for j in range(1, 4):
             try:
                 driver.get(link)
@@ -59,7 +59,7 @@ def find_likes(link, driver):
 
 def last_post(link, driver):
     driver.get(link)
-    driver.implicitly_wait(5)
+    driver.implicitly_wait(10)
     link_post = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[3]/article/div[1]/div/div[1]/div[1]/a").get_attribute("href")
     driver.get(link_post)
     driver.implicitly_wait(5)
@@ -129,16 +129,15 @@ driver.implicitly_wait(10)
 #driver.implicitly_wait(10) 
 #---------------------------------#
 
-dict = inf_blogger("https://www.instagram.com/ptuxerman/", driver)
-driver.close()
-
-for key, value in dict.items():
-    print(key, value)
-
 bloggers = search_bloggers("Travel Bloggers")
 
 for elem in bloggers:
-    inf_blogger(elem, driver)
+    dict = inf_blogger(elem, driver)
+    for key, value in dict.items():
+        print(key, value)
+    print("\n")
+driver.close()
+
 #search_bloggers("Путешествие", "test.txt")
 #search_bloggers("Travel", "test.txt")
 #search_bloggers("Travelling", "test.txt")
