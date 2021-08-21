@@ -5,6 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
 
 def inf_blogger(link, driver):
     driver.get(link)
@@ -124,8 +125,9 @@ def init_scraper(login, password):
     driver.implicitly_wait(110)
     driver.set_page_load_timeout(60) 
 
-    # chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument("--disable-notifications")
+    options = Options()
+    options.add_argument("user-data-dir=/tmp/auto")
+    driver = webdriver.Chrome(chrome_options=options)
 
     driver.get("https://www.instagram.com/accounts/login/")
 
@@ -147,7 +149,7 @@ def init_scraper(login, password):
 
     return driver
 
-driver = init_scraper("89851878142", "Kristina.Kul")
+driver = init_scraper("cofape7423", "5053842a9c434a72")
 dict = search_bloggers("Travel Blogger", driver)
 for i in dict:
     print(i)
