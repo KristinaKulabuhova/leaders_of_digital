@@ -10,7 +10,6 @@ from selenium.webdriver.chrome.options import Options
 def inf_blogger(link, driver):
     driver.get(link)
     
-    #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/header/section/div[2]")))
     profile = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/header/section/div[2]").text.lower()
 
     is_russia = re.findall("[а-яА-Я]+", profile) 
@@ -20,7 +19,6 @@ def inf_blogger(link, driver):
 
             information["link"] = link
 
-            #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/header/section/div[1]/h2")))
             name = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/header/section/div[1]/h2").text
             information["name"] = name
 
@@ -65,7 +63,6 @@ def find_likes_views(link, driver, information):
                 like = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/div/a/span").text
                 likes.append(like)
             except:
-                #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/span/span")))
                 view = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/span/span").text
                 views.append(view)
 
@@ -83,7 +80,6 @@ def last_post(link, driver):
     link_post = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[3]/article/div[1]/div/div[1]/div[1]/a").get_attribute("href")
     
     driver.get(link_post)
-    #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div/div[1]/article/div[3]/div[2]/a/time")))
     date = driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[1]/article/div[3]/div[2]/a/time").get_attribute("datetime")
 
     return date
@@ -148,24 +144,5 @@ def init_scraper(login, password):
     return driver
 
 driver = init_scraper("vefajov797", "dxrmnbu7tt72")
-dict = search_bloggers("Travel Blogger", driver, 5)
-for i in dict:
-    print(i)
+result = search_bloggers("Travel Blogger", driver, 5)
 driver.close()
-
-# for elem in bloggers:
-#     dict = inf_blogger(elem, driver)
-#     for key, value in dict.items():
-#         print(key, value)
-#     print("\n")
-# driver.close()
-
-#dict = inf_blogger("https://www.instagram.com/ptuxerman/", driver)
-#for key, value in dict.items():
-#    print(key, value)
-#    print("\n")
-
-#search_bloggers("Путешествие", "test.txt")
-#search_bloggers("Travel", "test.txt")
-#search_bloggers("Travelling", "test.txt")
-
